@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Sample</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Update Sample</h2>
+    <form th:action="@{/sample/update-sample/confirm}" th:object="${sample}" method="post" id="updateForm">
+        <div class="form-group">
+            <label for="id">ID:</label>
+            <span th:text="${sample.id}" class="form-control" id="id" name="id"></span>
+        </div>
+        <input type="hidden" th:field="*{id}" th:value="${sample.id}" />
+
+        <div class="form-group">
+            <label for="code">Code:</label>
+            <input type="text" class="form-control" id="code" name="code" th:field="*{code}" />
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" />
+        </div>
+
+        <div class="form-group">
+            <label for="path">Path:</label>
+            <span th:text="${sample.path}" class="form-control" id="path" name="id"></span>
+        </div>
+        <input type="hidden" th:field="*{path}" th:value="${sample.path}" />
+
+
+        <div class="container mt-5">
+            <h1>Sample Manage</h1>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>X Center</th>
+                    <th>Y Center</th>
+                    <th>Width Box</th>
+                    <th>Height Box</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="label : ${sample.getLabels()}">
+                    <td th:text="${label.id}"></td>
+                    <td th:text="${label.xCenter}"></td>
+                    <td th:text="${label.yCenter}"></td>
+                    <td th:text="${label.width}"></td>
+                    <td th:text="${label.height}"></td>
+                    <td>
+                        <button class="btn btn-warning">
+                            <a th:href="@{/label/manage/edit-label/{id}(id=${label.id})}" class="btn btn-block text-white">Edit</a>
+                        </button>
+                        <button class="btn btn-danger">
+                            <a th:href="@{/label/manage/delete-label/{id}(id=${label.id})}" class="btn btn-block text-white">Delete</a>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+                <button class="btn btn-success">
+                    <a th:href="@{/label/manage/add-label/{id}(id=${sample.id})}" class="btn btn-block text-white">Add Label</a>
+                </button>
+            </table>
+
+            <button class="btn btn-primary">Update Sample</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

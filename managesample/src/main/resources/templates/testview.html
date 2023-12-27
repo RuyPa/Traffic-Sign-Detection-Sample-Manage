@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple Drag and Drop Selections</title>
+  <style>
+    #image-container {
+      position: relative;
+    }
+    #image {
+      max-width: 100%;
+      height: auto;
+    }
+    .selection-box {
+      border: 2px dashed red;
+      position: absolute;
+      pointer-events: none;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<input type="file" id="fileInput" accept="image/*">
+<div id="image-container">
+  <img id="image" src="" alt="Your Image">
+  <canvas id="overlayCanvas" style="position: absolute; top: 0; left: 0;"></canvas>
+</div>
+<p>Center X: <span id="centerX">0</span></p>
+<p>Center Y: <span id="centerY">0</span></p>
+<p>Width: <span id="width">0</span></p>
+<p>Height: <span id="height">0</span></p>
+
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const image = document.getElementById('image');
+  const overlayCanvas = document.getElementById('overlayCanvas');
+  const centerX = document.getElementById('centerX');
+  const centerY = document.getElementById('centerY');
+  const width = document.getElementById('width');
+  const height = document.getElementById('height');
+
+  const selectedRectangles = [];
+
+  let isSelecting = false;
+  let startX, startY;
+  let imageOffsetX = 0, imageOffsetY = 0;
+
+  fileInput.addEventListener('change', handleFileSelect);
+  image.addEventListener('mousedown', handleImageMouseDown);
+  document.addEventListener('mousedown', handleDocumentMouseDown);
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+
+  function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        image.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function handleImageMouseDown(event) {
+    event.preventDefault();
+  }
+
+  function handleDocumentMouseDown(e) {
+    if (!isSelecting && e.target === image) {
+      e.preventDefault();
+    }
+
+    if (!isSelecting && e.target === image) {
+      isSelecting = true;
+      startX = Math.max(e.clientX, image.offsetLeft);
+      startY = Math.max(e.clientY, image.offsetTop);
+      imageOffsetX = image.offsetLeft;
+      imageOffsetY = image.offsetTop;
+    }
+  }
+
+  function handleMouseMove(e) {
+    if (isSelecting) {
+      const endX = Math.min(e.clientX, image.offsetLeft + image.width);
+      const endY = Math.min(e.clientY, image.offsetTop + image.height);
+
+      const boxX = Math.max(0, Math.min(startX - imageOffsetX, endX - imageOffsetX));
+      const boxY = Math.max(0, Math.min(startY - imageOffsetY, endY - imageOffsetY));
+      const boxWidth = Math.abs(endX - startX);
+      const boxHeight = Math.abs(endY - startY);
+
+      // Display a new selection box
+      const selectionBox = document.createElement('div');
+      selectionBox.className = 'selection-box';
+      selectionBox.style.left = boxX + 'px';
+      selectionBox.style.top = boxY + 'px';
+      selectionBox.style.width = boxWidth + 'px';
+      selectionBox.style.height = boxHeight + 'px';
+      document.getElementById('image-container').appendChild(selectionBox);
+
+      // Save the selected rectangle
+      selectedRectangles.push({
+        x: parseFloat(selectionBox.style.left),
+        y: parseFloat(selectionBox.style.top),
+        width: parseFloat(selectionBox.style.width),
+        height: parseFloat(selectionBox.style.height),
+      });
+
+      // Update the overlay canvas with all selected rectangles
+      updateOverlayCanvas();
+    }
+  }
+
+  function handleMouseUp() {
+    if (isSelecting) {
+      isSelecting = false;
+    }
+  }
+
+  function updateOverlayCanvas() {
+    const ctx = overlayCanvas.getContext('2d');
+    overlayCanvas.width = image.width;
+    overlayCanvas.height = image.height;
+    ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+    // Draw all selected rectangles
+    for (const rectangle of selectedRectangles) {
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+  }
+</script>
+</body>
+</html>

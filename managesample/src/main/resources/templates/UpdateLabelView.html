@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Update Sample</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h2>Update Sample</h2>
+  <form th:action="@{/label/update-label/confirm}" th:object="${label}" method="post" id="updateForm">
+    <div class="form-group">
+      <label for="id">ID:</label>
+      <span th:text="${label.id}" class="form-control" id="id" name="id"></span>
+    </div>
+    <input type="hidden" th:field="*{id}" th:value="${label.id}" />
+
+    <div class="form-group">
+      <label for="xCenter">X Center:</label>
+      <input type="text" class="form-control" id="xCenter" name="xCenter" th:field="*{xCenter}" />
+    </div>
+
+    <div class="form-group">
+      <label for="yCenter">Y Center:</label>
+      <input type="text" class="form-control" id="yCenter" name="yCenter" th:field="*{yCenter}" />
+    </div>
+
+    <div class="form-group">
+      <label for="height">Height:</label>
+      <input type="text" class="form-control" id="height" name="height" th:field="*{height}" />
+    </div>
+
+    <div class="form-group">
+      <label for="width">Width:</label>
+      <input type="text" class="form-control" id="width" name="width" th:field="*{width}" />
+    </div>
+
+    <div class="form-group">
+      <label for="sampleId">ID Sample:</label>
+      <span th:text="${label.sampleId}" class="form-control" id="sampleId" name="sampleId"></span>
+    </div>
+    <input type="hidden" th:field="*{sampleId}" th:value="${label.sampleId}" />
+
+    <div class="form-group">
+      <label for="path">Path:</label>
+      <span class="form-control" id="path">D:\test flask cors\data\images\train</span>
+    </div>
+    <input type="hidden" name="path" value="C:\Users\Admin\Desktop\managesample\managesample\src\main\resources\static\labels">
+    <button class="btn btn-primary">Update Sample</button>
+  </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

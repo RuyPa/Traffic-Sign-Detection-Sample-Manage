@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirm Sample</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Confirm Delete Label</h1>
+    <form th:action="@{/label/delete-label/delete/{id}(id=${label.id})}" method="post" th:object="${label}">
+        <div class="form-group">
+            <label>ID:</label>
+            <span th:text="${label.id}"></span>
+            <input type="hidden" th:field="*{id}" />
+        </div>
+        <div class="form-group">
+            <label>XCenter:</label>
+            <span th:text="${label.xCenter}"></span>
+            <input type="hidden" th:field="*{xCenter}" />
+        </div>
+        <div class="form-group">
+            <label>YCenter:</label>
+            <span th:text="${label.yCenter}"></span>
+            <input type="hidden" th:field="*{yCenter}" />
+        </div>
+        <div class="form-group">
+            <label>Height:</label>
+            <span th:text="${label.height}"></span>
+            <input type="hidden" th:field="*{height}" />
+        </div>
+        <div class="form-group">
+            <label>Width:</label>
+            <span th:text="${label.width}"></span>
+            <input type="hidden" th:field="*{width}" />
+        </div>
+        <div class="form-group">
+            <label>Sample Id:</label>
+            <span th:text="${label.sampleId}"></span>
+            <input type="hidden" th:field="*{sampleId}" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Confirm</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
